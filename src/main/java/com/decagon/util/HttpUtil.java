@@ -20,9 +20,10 @@ public class HttpUtil {
 
     private final String USER_AGENT = "Mozilla/5.0";
 
-    public List<String> sendGet(String url) {
-        List<String> data = new ArrayList();
+    public String sendGet(String url) {
+       // List<String> data = new ArrayList();
         System.out.println("url" + url);
+        String resp="";
 
         String urlCall = url;
 
@@ -47,12 +48,12 @@ public class HttpUtil {
             }
             in.close();
             System.out.println("respnse "+response);
-
-            data.add(response.toString());
+             
+           resp=response.toString();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return data;
+        return resp;
     }
 
     public String getHighestCount(String url) {

@@ -26,48 +26,46 @@ public class ArticleService {
 
     public static List<String> getUsernames(int threshold) {
         HttpUtil util = new HttpUtil();
+        List<String>data=new ArrayList();
         String url = "https://jsonmock.hackerrank.com/api/article_users/search?page=" + threshold;
 
-        List<String> response = util.sendGet(url);
+        String response = util.sendGet(url);
 
-        return response;
-
+           JSONObject object = new JSONObject(response);
+        JSONArray jsonArray = object.getJSONArray("data");
+        for (int i = 0; i < jsonArray.length(); i++) {
+             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+             String username = jsonObject1.get("username").toString();
+             data.add(username );
+        }
+          return data;
     }
 
     public static String getUsernameWithHighestCommentCount() {
         HttpUtil util = new HttpUtil();
         String url = "https://jsonmock.hackerrank.com/api/article_users";
         String highestUsername = "";
-      HashMap<String, Integer> map=new HashMap();
+        HashMap<String, Integer> map = new HashMap();
         String response = util.getHighestCount(url);
         JSONObject object = new JSONObject(response);
         JSONArray jsonArray = object.getJSONArray("data");
         int max = 0;
         for (int i = 0; i < jsonArray.length(); i++) {
-            
 
             JSONObject jsonObject1 = jsonArray.getJSONObject(i);
             int comment_count = jsonObject1.getInt("comment_count");
             String username = jsonObject1.get("username").toString();
-              map.put(username, comment_count);
-            
-               max = Math.max(max, comment_count);
-               
-             
-                
-           
+            map.put(username, comment_count);
+
+            max = Math.max(max, comment_count);
 
         }
-         
-         for (Entry<String, Integer> entry : map.entrySet()) {
-            if (entry.getValue()==max) {
-                highestUsername=entry.getKey();
+
+        for (Entry<String, Integer> entry : map.entrySet()) {
+            if (entry.getValue() == max) {
+                highestUsername = entry.getKey();
             }
         }
-         
-         
-       
-        
 
         return highestUsername;
     }
@@ -75,7 +73,7 @@ public class ArticleService {
     public static List<String> getUsernamesSortedByRecordDate(int threshold) {
         HttpUtil util = new HttpUtil();
         List<String> data = new ArrayList();
-        String url = "https://jsonmock.hackerrank.com/api/article_users/search?page/"+threshold;
+        String url = "https://jsonmock.hackerrank.com/api/article_users/search?page/" + threshold;
         String response = util.getHighestCount(url);
         HashMap hmap = new HashMap();
         JSONObject object = new JSONObject(response);
